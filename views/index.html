@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <title>Salons de discussion</title>
+        <style>
+            .errors{
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Salons de discussion</h1>
+        </header>
+        <main>
+            <ul id="errors" class="errors"></ul>
+            <section id="home" class="chat_section">
+                <h3>Mes informations</h3>
+                <form>
+                    <input id="inputUserName" type="text" placeholder="Pseudo...">
+                </form>
+                <h3>Rejoindre un salon</h3>
+                <form>
+                    <input id="inputChannelName" type="text" placeholder="Nom du salon...">
+                    <input id="inputChannelSearch" type="button" value="Valider">
+                </form>
+                <h3>Liste des salons</h3>
+                <ul id="listChannels"></ul>
+            </section>
+            <section id="chat" class="chat_section">
+                <h4>Informations du salon</h4>
+                <p>Sujet : <span id="channelName"></span></p>
+                <p><span id="channelUsersNumber"></span> utilisateur(s) connecté(s)</p>
+                <ul id="channelUsersList"></ul>
+                <h4>Chat</h4>
+                <ul id="messagesList"></ul>
+                <ul id="tweetsList"></ul>
+                <form>
+                    <input type="text" id="messageText">
+                    <input type="button" id="messageButton" value="Envoyer">
+                </form>
+            </section>
+        </main>
+        <footer></footer>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="lib/chat.js"></script>
+        <script>
+            var socket = io.connect('http://localhost:82/chat');
+            var chat = new Chat(socket, {
+                els: {
+                    channelsList: 'listChannels',
+                    userName: 'inputUserName',
+                    searchName: 'inputChannelName',
+                    searchButton: 'inputChannelSearch',
+                    channelUsersList: 'channelUsersList',
+                    channelUsersNumber: 'channelUsersNumber',
+                    channelName: 'channelName',
+                    messagesList: 'messagesList',
+                    tweetsList: 'tweetsList',
+                    messageText: 'messageText',
+                    messageButton: 'messageButton',
+                    errors: 'errors'
+                }
+            });
+            chat.listen();
+            chat.showSection('home');
+        </script>
+    </body>
+</html>
